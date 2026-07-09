@@ -1,7 +1,20 @@
-// 1. Initialize Cloud Database Connection
-const SUPABASE_URL = "https://clpqkjjjybtkhwjscztf.supabase.co";
-const SUPABASE_KEY = "sb_publishable_lTgIA6WihXz3HLPRG1pFZA_0-T8t9cFXK-Y8w"; 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// 1. Safe Cloud Database Connection Initialization Engine
+let supabase;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const SUPABASE_URL = "https://clpqkjjjybtkhwjscztf.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_lTgIA6WihXz3HLPRG1pFZA_0-T8t9cFXK-Y8w";
+  
+  if (window.supabase) {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log("Supabase core initialized successfully.");
+  } else {
+    console.error("External Supabase library delay detected. Retrying setup...");
+    setTimeout(() => {
+      if (window.supabase) supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }, 1000);
+  }
+});
 
 let secretTapCount = 0;
 
@@ -46,14 +59,26 @@ function attemptLogin() {
     return;
   }
 
+  // Build baseline hardcoded credentials so you are NEVER locked out
+  const staffRegistry = {
+    "Dr. Kenneth": "LMC2026KC",
+    "Dr. George": "LMC2026DG",
+    "Clinician Wandera Emmanuel": "LMC2026WE",
+    "Clinician Geoffrey": "LMC2026GF",
+    "Nurse Judith": "LMC2026NJ",
+    "Nurse Violet": "LMC2026NV",
+    "Nurse Grace": "LMC2026NG",
+    "Bamusubire Dan (Lab Tech)": "LMC2026BD",
+    "Alex (Lab Assistant)": "LMC2026LA"
+  };
+
+  // Supplement registry if local storage has additions
   const storedData = localStorage.getItem('lmc_secure_staff_reg');
-  let staffRegistry = {};
-  
   if (storedData) {
-    staffRegistry = JSON.parse(storedData);
-  } else {
-    if (userSelect === "Dr. Kenneth" && passwordInput === "LMC2026KC") {
-      staffRegistry["Dr. Kenneth"] = "LMC2026KC";
+    try {
+      Object.assign(staffRegistry, JSON.parse(storedData));
+    } catch(e) {
+      console.error("Local registry parsing error", e);
     }
   }
 
@@ -95,6 +120,11 @@ function switchTab(tabId) {
 async function saveEncounterData() {
   if (!currentLoggedInUser) {
     alert("Error: No authenticated user session found. Please re-login.");
+    return;
+  }
+
+  if (!supabase) {
+    alert("⚠️ Database client is not ready. Please check internet access and refresh.");
     return;
   }
 
@@ -155,4 +185,4 @@ async function saveEncounterData() {
     console.error("Database sync error:", error.message);
     alert("⚠️ Connection issue! Data could not sync to cloud server. Check internet connection.");
   }
-    }
+}
