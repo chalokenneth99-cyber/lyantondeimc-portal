@@ -1,6 +1,6 @@
 // 1. Initialize Cloud Database Connection
 const SUPABASE_URL = "https://clpqkjjjybtkhwjscztf.supabase.co";
-const SUPABASE_KEY = "PASTE_YOUR_LONG_ANON_PUBLIC_KEY_HERE";
+const SUPABASE_KEY = "sb_publishable_lTgIA6WihXz3HLPRG1pFZA_O-T8t9cF";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let secretTapCount = 0;
