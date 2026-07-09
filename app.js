@@ -1,6 +1,6 @@
 // 1. Initialize Cloud Database Connection
 const SUPABASE_URL = "https://clpqkjjjybtkhwjscztf.supabase.co";
-const SUPABASE_KEY = "sb_publishable_lTgIA6WihXz3HLPRG1pFZA_0-T8t9cF"; 
+const SUPABASE_KEY = "sb_publishable_lTgIA6WihXz3HLPRG1pFZA_0-T8t9cFXK-Y8w"; 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let secretTapCount = 0;
@@ -155,4 +155,4 @@ async function saveEncounterData() {
     console.error("Database sync error:", error.message);
     alert("⚠️ Connection issue! Data could not sync to cloud server. Check internet connection.");
   }
-}
+    }
