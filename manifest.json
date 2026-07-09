@@ -1,18 +1,9 @@
 {
-  "short_name": "LMC Mobile",
   "name": "Lyantonde IMC Mobile Workspace",
-  "icons": [
-    {
-      "src": "logo.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any maskable"
-    }
-  ],
-  "start_url": "./index.html",
+  "short_name": "LMC Portal",
+  "start_url": "/limc-portal/index.html",
+  "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#2563eb",
-  "display": "standalone",
   "orientation": "portrait"
 }
-
